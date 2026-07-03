@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flare — Local Visibility Agency</title>
+<meta name="description" content="Flare helps local businesses get found, get called, and get busy. Local SEO, conversion-built websites, and hyper-local ads.">
+
+<!-- Performance: preconnect before loading fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<!-- Tailwind CDN (JIT) -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          ink: '#0B0D10',
+          surface: '#14171C',
+          surface2: '#1B1F26',
+          edge: '#2A2F38',
+          bone: '#ECE9E2',
+          muted: '#8B9098',
+          flare: '#FF6B35',
+          flaredim: '#B0491F',
+          live: '#4ADE80',
+        },
+        fontFamily: {
+          display: ['"Bebas Neue"', 'sans-serif'],
+          body: ['Manrope', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+          mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
+        },
+      },
+    },
+  };
+</script>
+
+<style>
+  :root{
+    --bg: #0B0D10;
+  }
+  html, body { background:#0B0D10; }
+  body { font-family: 'Manrope', sans-serif; }
+
+  /* Focus visibility across the whole page */
+  a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
+    outline: 2px solid #FF6B35;
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  /* Signature element: neon-sign flicker on the urgent hero word */
+  .neon-word {
+    color: #FF6B35;
+    text-shadow: 0 0 6px rgba(255,107,53,0.55), 0 0 22px rgba(255,107,53,0.25);
+    animation: flicker 5.5s infinite;
+  }
+  @keyframes flicker {
+    0%, 3%, 6%, 100% { opacity: 1; text-shadow: 0 0 6px rgba(255,107,53,0.55), 0 0 22px rgba(255,107,53,0.25); }
+    4% { opacity: 0.35; text-shadow: none; }
+    5% { opacity: 1; text-shadow: 0 0 6px rgba(255,107,53,0.55), 0 0 22px rgba(255,107,53,0.25); }
+    46% { opacity: 1; }
+    47% { opacity: 0.4; text-shadow: none; }
+    48% { opacity: 1; text-shadow: 0 0 6px rgba(255,107,53,0.55), 0 0 22px rgba(255,107,53,0.25); }
+  }
+
+  /* Radar / signal pulse — echoes "getting found" locally */
+  .pulse-ring {
+    position: absolute;
+    border-radius: 9999px;
+    border: 1px solid rgba(255,107,53,0.35);
+    animation: pulse-out 4s cubic-bezier(0.2,0.6,0.4,1) infinite;
+  }
+  .pulse-ring.r2 { animation-delay: 1.3s; }
+  .pulse-ring.r3 { animation-delay: 2.6s; }
+  @keyframes pulse-out {
+    0% { transform: scale(0.3); opacity: 0.9; }
+    100% { transform: scale(1.9); opacity: 0; }
+  }
+
+  .grain {
+    background-image: radial-gradient(rgba(255,255,255,0.035) 1px, transparent 1px);
+    background-size: 3px 3px;
+  }
+
+  .nav-blur {
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    background-color: rgba(11,13,16,0.78);
+    border-bottom: 1px solid rgba(42,47,56,1);
+  }
+
+  .card-hover { transition: transform .35s ease, border-color .35s ease, box-shadow .35s ease; }
+  .card-hover:hover { transform: translateY(-4px); border-color: rgba(255,107,53,0.5); box-shadow: 0 10px 40px -12px rgba(255,107,53,0.25); }
+
+  .slide-track { transition: transform .6s cubic-bezier(0.65,0,0.35,1); }
+
+  input, textarea {
+    background-color: #14171C;
+    border: 1px solid #2A2F38;
+    color: #ECE9E2;
+  }
+  input::placeholder, textarea::placeholder { color: #8B9098; }
+  input:focus, textarea:focus { border-color: #FF6B35; }
+
+  /* Honeypot field — hidden from real users, catches bots */
+  .hp-field { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .neon-word, .pulse-ring { animation: none !important; }
+    * { scroll-behavior: auto !important; }
+  }
+</style>
+</head>
+
+<body class="bg-ink text-bone antialiased grain">
+
+<!-- ============ NAV ============ -->
+<header id="mainNav" class="fixed top-0 inset-x-0 z-50 transition-all duration-300">
+  <nav class="max-w-7xl mx-auto px-6 lg:px-8 flex items-center justify-between h-16 md:h-20">
+    <a href="#top" class="flex items-center gap-2 group">
+      <span class="relative flex h-2.5 w-2.5">
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-flare opacity-60"></span>
+        <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-flare"></span>
+      </span>
+      <span class="font-display text-2xl tracking-wide text-bone">FLARE</span>
+    </a>
+
+    <div class="hidden md:flex items-center gap-8 font-mono text-sm text-muted">
+      <a href="#services" class="hover:text-bone transition-colors">Services</a>
+      <a href="#work" class="hover:text-bone transition-colors">Results</a>
+      <a href="#testimonials" class="hover:text-bone transition-colors">Reviews</a>
+      <a href="#contact" class="hover:text-bone transition-colors">Contact</a>
+    </div>
+
+    <a href="#contact" class="hidden md:inline-flex items-center gap-2 bg-flare hover:bg-flaredim text-ink font-semibold text-sm px-5 py-2.5 rounded-md transition-colors">
+      Get Free Audit
+    </a>
+
+    <button id="menuBtn" aria-label="Open menu" aria-expanded="false" class="md:hidden text-bone p-2">
+      <svg id="menuIconOpen" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+  </nav>
+
+  <!-- Mobile menu -->
+  <div id="mobileMenu" class="hidden md:hidden bg-surface border-b border-edge">
+    <div class="px-6 py-5 flex flex-col gap-4 font-mono text-sm">
+      <a href="#services" class="text-muted hover:text-bone">Services</a>
+      <a href="#work" class="text-muted hover:text-bone">Results</a>
+      <a href="#testimonials" class="text-muted hover:text-bone">Reviews</a>
+      <a href="#contact" class="text-muted hover:text-bone">Contact</a>
+      <a href="#contact" class="bg-flare text-ink font-semibold text-center px-5 py-2.5 rounded-md">Get Free Audit</a>
+    </div>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section id="top" class="relative overflow-hidden min-h-screen flex items-center pt-24 pb-16">
+  <!-- decorative pulse rings -->
+  <div class="pointer-events-none absolute -right-24 top-1/2 -translate-y-1/2 hidden lg:block" aria-hidden="true">
+    <div class="relative w-[520px] h-[520px]">
+      <div class="pulse-ring r1 inset-0 absolute" style="width:100%;height:100%;"></div>
+      <div class="pulse-ring r2 inset-0 absolute" style="width:100%;height:100%;"></div>
+      <div class="pulse-ring r3 inset-0 absolute" style="width:100%;height:100%;"></div>
+      <div class="absolute inset-0 flex items-center justify-center">
+        <div class="h-3 w-3 rounded-full bg-flare shadow-[0_0_30px_10px_rgba(255,107,53,0.35)]"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-6 lg:px-8 w-full relative z-10">
+    <div class="max-w-3xl">
+      <p class="font-mono text-xs md:text-sm text-flare tracking-widest uppercase mb-5 flex items-center gap-2">
+        <span class="h-1.5 w-1.5 rounded-full bg-live"></span>
+        For local, brick-and-mortar businesses
+      </p>
+
+      <h1 class="font-display text-[15vw] leading-[0.9] sm:text-7xl md:text-8xl lg:text-[6.2rem] tracking-wide uppercase text-bone">
+        Someone nearby<br>
+        is searching for you <span class="neon-word">right now</span>
+      </h1>
+
+      <p class="mt-7 text-lg md:text-xl text-muted max-w-xl leading-relaxed">
+        The question isn't whether your next customer is looking. It's whether they find you or the business three doors down. Flare fixes that — fast.
+      </p>
+
+      <div class="mt-9 flex flex-col sm:flex-row gap-4">
+        <a href="#contact" class="inline-flex justify-center items-center bg-flare hover:bg-flaredim text-ink font-semibold px-7 py-3.5 rounded-md transition-colors text-base">
+          Get My Free Visibility Audit
+        </a>
+        <a href="#services" class="inline-flex justify-center items-center border border-edge hover:border-bone/40 text-bone font-semibold px-7 py-3.5 rounded-md transition-colors text-base">
+          See what we do
+        </a>
+      </div>
+
+      <div class="mt-12 flex flex-wrap gap-x-10 gap-y-4 font-mono text-xs text-muted uppercase tracking-wide">
+        <span>No lock-in contracts</span>
+        <span>Local-first strategy</span>
+        <span>Setup in under 2 weeks</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SERVICES ============ -->
+<section id="services" class="relative py-24 md:py-32 border-t border-edge">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <div class="max-w-2xl mb-16">
+      <p class="font-mono text-xs text-flare tracking-widest uppercase mb-3">What we build</p>
+      <h2 class="font-display text-5xl md:text-6xl uppercase tracking-wide">Three problems. One fix each.</h2>
+      <p class="mt-4 text-muted text-lg">Most local businesses lose customers in the same three spots. We close all three, in order.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+      <!-- Card 1 -->
+      <div class="card-hover bg-surface border border-edge rounded-xl p-8 flex flex-col">
+        <div class="h-11 w-11 rounded-lg bg-flare/10 flex items-center justify-center mb-6">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-flare" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a2 2 0 01-2.828 0l-4.243-4.243a8 8 0 1111.314 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+        </div>
+        <p class="font-mono text-xs text-muted uppercase tracking-widest mb-2">Own the map pin</p>
+        <h3 class="font-display text-3xl uppercase tracking-wide mb-3">Local SEO &amp; Maps</h3>
+        <p class="text-muted leading-relaxed flex-1">We get your business ranking in the map pack for the searches that actually drive foot traffic — not vanity keywords nobody types.</p>
+        <a href="#contact" class="mt-6 inline-flex items-center gap-1.5 text-flare font-semibold text-sm hover:gap-2.5 transition-all">
+          See how it works
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+        </a>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="card-hover bg-surface border border-edge rounded-xl p-8 flex flex-col">
+        <div class="h-11 w-11 rounded-lg bg-flare/10 flex items-center justify-center mb-6">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-flare" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0V12a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 12V5.25" />
+          </svg>
+        </div>
+        <p class="font-mono text-xs text-muted uppercase tracking-widest mb-2">Sites that ring the phone</p>
+        <h3 class="font-display text-3xl uppercase tracking-wide mb-3">Conversion Websites</h3>
+        <p class="text-muted leading-relaxed flex-1">Fast, mobile-first pages built around one job: turning a visitor into a call, a booking, or a walk-in — not a pretty portfolio piece.</p>
+        <a href="#contact" class="mt-6 inline-flex items-center gap-1.5 text-flare font-semibold text-sm hover:gap-2.5 transition-all">
+          See how it works
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+        </a>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="card-hover bg-surface border border-edge rounded-xl p-8 flex flex-col">
+        <div class="h-11 w-11 rounded-lg bg-flare/10 flex items-center justify-center mb-6">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-flare" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456z" />
+          </svg>
+        </div>
+        <p class="font-mono text-xs text-muted uppercase tracking-widest mb-2">Ads that hit your zip code</p>
+        <h3 class="font-display text-3xl uppercase tracking-wide mb-3">Hyper-Local Ads</h3>
+        <p class="text-muted leading-relaxed flex-1">Tightly geo-fenced campaigns that put you in front of people close enough to actually show up today, not next month.</p>
+        <a href="#contact" class="mt-6 inline-flex items-center gap-1.5 text-flare font-semibold text-sm hover:gap-2.5 transition-all">
+          See how it works
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ RESULTS STRIP ============ -->
+<section id="work" class="border-t border-b border-edge bg-surface/40">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8 py-14 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+    <div>
+      <p class="font-display text-4xl md:text-5xl text-flare">120+</p>
+      <p class="mt-2 text-muted text-sm font-mono uppercase tracking-wide">Local businesses served</p>
+    </div>
+    <div>
+      <p class="font-display text-4xl md:text-5xl text-flare">2 wks</p>
+      <p class="mt-2 text-muted text-sm font-mono uppercase tracking-wide">Typical setup time</p>
+    </div>
+    <div>
+      <p class="font-display text-4xl md:text-5xl text-flare">14</p>
+      <p class="mt-2 text-muted text-sm font-mono uppercase tracking-wide">Industries covered</p>
+    </div>
+    <div>
+      <p class="font-display text-4xl md:text-5xl text-flare">0</p>
+      <p class="mt-2 text-muted text-sm font-mono uppercase tracking-wide">Long-term contracts required</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TESTIMONIALS ============ -->
+<section id="testimonials" class="py-24 md:py-32">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <div class="max-w-2xl mb-14">
+      <p class="font-mono text-xs text-flare tracking-widest uppercase mb-3">From the neighborhood</p>
+      <h2 class="font-display text-5xl md:text-6xl uppercase tracking-wide">Owners, not brands.</h2>
+    </div>
+
+    <div class="relative" role="region" aria-label="Customer testimonials" aria-roledescription="carousel">
+      <div class="overflow-hidden">
+        <div id="slideTrack" class="slide-track flex">
+
+          <!-- Slide 1 -->
+          <div class="w-full flex-shrink-0 px-1" role="group" aria-roledescription="slide" aria-label="1 of 3">
+            <div class="bg-surface border border-edge rounded-xl p-8 md:p-12 max-w-3xl mx-auto">
+              <svg class="h-8 w-8 text-flare mb-6" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9.5 7C6.5 7 4 9.5 4 12.5S6.5 18 9.5 18c.4 0 .8 0 1.1-.1-.6 1.4-1.9 2.4-3.6 2.6v2c3.4-.3 6-3.2 6-6.8V12c0-2.8-2.2-5-5-5zm10 0c-3 0-5.5 2.5-5.5 5.5S16.5 18 19.5 18c.4 0 .8 0 1.1-.1-.6 1.4-1.9 2.4-3.6 2.6v2c3.4-.3 6-3.2 6-6.8V12c0-2.8-2.2-5-5-5z"/></svg>
+              <p class="text-xl md:text-2xl leading-relaxed text-bone">Within a month our shop finally showed up when people searched "bakery near me." Walk-ins alone paid for the whole thing.</p>
+              <div class="mt-8 flex items-center gap-3">
+                <div class="h-11 w-11 rounded-full bg-flare/15 flex items-center justify-center font-display text-flare text-lg">M</div>
+                <div>
+                  <p class="font-semibold text-bone">Marisol Ortega</p>
+                  <p class="text-muted text-sm font-mono">Owner, Sunnyside Bakehouse</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Slide 2 -->
+          <div class="w-full flex-shrink-0 px-1" role="group" aria-roledescription="slide" aria-label="2 of 3">
+            <div class="bg-surface border border-edge rounded-xl p-8 md:p-12 max-w-3xl mx-auto">
+              <svg class="h-8 w-8 text-flare mb-6" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9.5 7C6.5 7 4 9.5 4 12.5S6.5 18 9.5 18c.4 0 .8 0 1.1-.1-.6 1.4-1.9 2.4-3.6 2.6v2c3.4-.3 6-3.2 6-6.8V12c0-2.8-2.2-5-5-5zm10 0c-3 0-5.5 2.5-5.5 5.5S16.5 18 19.5 18c.4 0 .8 0 1.1-.1-.6 1.4-1.9 2.4-3.6 2.6v2c3.4-.3 6-3.2 6-6.8V12c0-2.8-2.2-5-5-5z"/></svg>
+              <p class="text-xl md:text-2xl leading-relaxed text-bone">Our old site looked fine but never rang the phone. The new one is plain, fast, and the calls haven't stopped since.</p>
+              <div class="mt-8 flex items-center gap-3">
+                <div class="h-11 w-11 rounded-full bg-flare/15 flex items-center justify-center font-display text-flare text-lg">D</div>
+                <div>
+                  <p class="font-semibold text-bone">Derek Holt</p>
+                  <p class="text-muted text-sm font-mono">Owner, Holt Heating &amp; Air</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Slide 3 -->
+          <div class="w-full flex-shrink-0 px-1" role="group" aria-roledescription="slide" aria-label="3 of 3">
+            <div class="bg-surface border border-edge rounded-xl p-8 md:p-12 max-w-3xl mx-auto">
+              <svg class="h-8 w-8 text-flare mb-6" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9.5 7C6.5 7 4 9.5 4 12.5S6.5 18 9.5 18c.4 0 .8 0 1.1-.1-.6 1.4-1.9 2.4-3.6 2.6v2c3.4-.3 6-3.2 6-6.8V12c0-2.8-2.2-5-5-5zm10 0c-3 0-5.5 2.5-5.5 5.5S16.5 18 19.5 18c.4 0 .8 0 1.1-.1-.6 1.4-1.9 2.4-3.6 2.6v2c3.4-.3 6-3.2 6-6.8V12c0-2.8-2.2-5-5-5z"/></svg>
+              <p class="text-xl md:text-2xl leading-relaxed text-bone">They actually explained what they were doing instead of hiding behind jargon. New patient bookings are up and I understand why.</p>
+              <div class="mt-8 flex items-center gap-3">
+                <div class="h-11 w-11 rounded-full bg-flare/15 flex items-center justify-center font-display text-flare text-lg">P</div>
+                <div>
+                  <p class="font-semibold text-bone">Priya Nair</p>
+                  <p class="text-muted text-sm font-mono">Owner, Nair Family Dental</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="flex items-center justify-center gap-6 mt-8">
+        <button id="prevSlide" aria-label="Previous testimonial" class="h-10 w-10 rounded-full border border-edge hover:border-flare flex items-center justify-center transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" /></svg>
+        </button>
+        <div id="dots" class="flex items-center gap-2">
+          <button class="dot h-2 w-2 rounded-full bg-flare" aria-label="Go to slide 1" aria-current="true"></button>
+          <button class="dot h-2 w-2 rounded-full bg-edge" aria-label="Go to slide 2"></button>
+          <button class="dot h-2 w-2 rounded-full bg-edge" aria-label="Go to slide 3"></button>
+        </div>
+        <button id="nextSlide" aria-label="Next testimonial" class="h-10 w-10 rounded-full border border-edge hover:border-flare flex items-center justify-center transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section id="contact" class="py-24 md:py-32 border-t border-edge relative overflow-hidden">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+
+    <div>
+      <p class="font-mono text-xs text-flare tracking-widest uppercase mb-3">Start here</p>
+      <h2 class="font-display text-5xl md:text-6xl uppercase tracking-wide mb-6">Get your free<br>visibility audit</h2>
+      <p class="text-muted text-lg leading-relaxed max-w-md">Tell us about your business. We'll show you exactly where you're invisible online and what it would take to fix it — no pressure, no obligation.</p>
+
+      <div class="mt-10 flex items-center gap-3 text-sm text-muted font-mono">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-live" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+        </svg>
+        Your information is encrypted in transit and never sold.
+      </div>
+    </div>
+
+    <form id="contactForm" novalidate class="bg-surface border border-edge rounded-xl p-6 md:p-8 space-y-5" autocomplete="on">
+
+      <!-- Honeypot: hidden from real users, traps bots -->
+      <div class="hp-field" aria-hidden="true">
+        <label for="company_website">Leave this field empty</label>
+        <input type="text" id="company_website" name="company_website" tabindex="-1" autocomplete="off">
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        <div>
+          <label for="fullName" class="block text-sm font-medium text-bone mb-1.5">Full name</label>
+          <input type="text" id="fullName" name="fullName" required autocomplete="name"
+            class="w-full rounded-md px-4 py-2.5 text-sm placeholder:text-muted" placeholder="Jamie Rivera">
+          <p class="hidden text-xs text-flare mt-1" data-error-for="fullName">Enter your full name.</p>
+        </div>
+        <div>
+          <label for="businessName" class="block text-sm font-medium text-bone mb-1.5">Business name</label>
+          <input type="text" id="businessName" name="businessName" required autocomplete="organization"
+            class="w-full rounded-md px-4 py-2.5 text-sm placeholder:text-muted" placeholder="Rivera's Auto Shop">
+          <p class="hidden text-xs text-flare mt-1" data-error-for="businessName">Enter your business name.</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        <div>
+          <label for="email" class="block text-sm font-medium text-bone mb-1.5">Email</label>
+          <input type="email" id="email" name="email" required autocomplete="email"
+            class="w-full rounded-md px-4 py-2.5 text-sm placeholder:text-muted" placeholder="you@business.com">
+          <p class="hidden text-xs text-flare mt-1" data-error-for="email">Enter a valid email address.</p>
+        </div>
+        <div>
+          <label for="phone" class="block text-sm font-medium text-bone mb-1.5">Phone</label>
+          <input type="tel" id="phone" name="phone" required autocomplete="tel"
+            class="w-full rounded-md px-4 py-2.5 text-sm placeholder:text-muted" placeholder="(555) 123-4567">
+          <p class="hidden text-xs text-flare mt-1" data-error-for="phone">Enter a valid phone number.</p>
+        </div>
+      </div>
+
+      <div>
+        <label for="message" class="block text-sm font-medium text-bone mb-1.5">What's going on with your visibility right now?</label>
+        <textarea id="message" name="message" rows="4" required
+          class="w-full rounded-md px-4 py-2.5 text-sm placeholder:text-muted resize-none" placeholder="e.g. we don't show up on Google Maps at all"></textarea>
+        <p class="hidden text-xs text-flare mt-1" data-error-for="message">Tell us a bit about your situation.</p>
+      </div>
+
+      <label class="flex items-start gap-3 text-sm text-muted">
+        <input type="checkbox" id="consent" name="consent" required class="mt-1 rounded border-edge bg-surface text-flare focus:ring-flare">
+        <span>I agree to be contacted about my free audit. I can opt out anytime.</span>
+      </label>
+      <p class="hidden text-xs text-flare -mt-3" data-error-for="consent">Please confirm consent to continue.</p>
+
+      <button type="submit" class="w-full bg-flare hover:bg-flaredim text-ink font-semibold px-6 py-3.5 rounded-md transition-colors">
+        Send my free audit request
+      </button>
+
+      <div id="formSuccess" class="hidden items-center gap-3 bg-live/10 border border-live/30 text-live rounded-md px-4 py-3 text-sm">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+        Got it — we'll reach out within one business day.
+      </div>
+
+      <p class="text-xs text-muted text-center pt-1">This form is a front-end template. Connect the submit handler to your backend or form API and add CSRF protection before going live.</p>
+    </form>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="border-t border-edge py-12">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+    <div class="flex items-center gap-2">
+      <span class="h-2 w-2 rounded-full bg-flare"></span>
+      <span class="font-display text-xl tracking-wide">FLARE</span>
+    </div>
+    <div class="flex flex-wrap justify-center gap-x-8 gap-y-2 font-mono text-xs text-muted uppercase tracking-wide">
+      <a href="#services" class="hover:text-bone transition-colors">Services</a>
+      <a href="#work" class="hover:text-bone transition-colors">Results</a>
+      <a href="#testimonials" class="hover:text-bone transition-colors">Reviews</a>
+      <a href="#contact" class="hover:text-bone transition-colors">Contact</a>
+    </div>
+    <p class="text-xs text-muted font-mono">© 2026 Flare Local. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+  // ---- Nav scroll blur ----
+  const mainNav = document.getElementById('mainNav');
+  const onScroll = () => {
+    if (window.scrollY > 10) {
+      mainNav.classList.add('nav-blur');
+    } else {
+      mainNav.classList.remove('nav-blur');
+    }
+  };
+  document.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // ---- Mobile menu ----
+  const menuBtn = document.getElementById('menuBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  menuBtn.addEventListener('click', () => {
+    const isOpen = !mobileMenu.classList.contains('hidden');
+    mobileMenu.classList.toggle('hidden');
+    menuBtn.setAttribute('aria-expanded', String(!isOpen));
+  });
+  mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    mobileMenu.classList.add('hidden');
+    menuBtn.setAttribute('aria-expanded', 'false');
+  }));
+
+  // ---- Testimonial slider ----
+  (function () {
+    const track = document.getElementById('slideTrack');
+    const dots = Array.from(document.querySelectorAll('.dot'));
+    const prevBtn = document.getElementById('prevSlide');
+    const nextBtn = document.getElementById('nextSlide');
+    const slideCount = dots.length;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let index = 0;
+    let timer = null;
+
+    function render() {
+      track.style.transform = `translateX(-${index * 100}%)`;
+      dots.forEach((d, i) => {
+        d.classList.toggle('bg-flare', i === index);
+        d.classList.toggle('bg-edge', i !== index);
+        d.setAttribute('aria-current', i === index ? 'true' : 'false');
+      });
+    }
+
+    function go(i) {
+      index = (i + slideCount) % slideCount;
+      render();
+    }
+
+    function startAutoplay() {
+      if (reduceMotion) return;
+      stopAutoplay();
+      timer = setInterval(() => go(index + 1), 6000);
+    }
+    function stopAutoplay() {
+      if (timer) clearInterval(timer);
+    }
+
+    prevBtn.addEventListener('click', () => { go(index - 1); startAutoplay(); });
+    nextBtn.addEventListener('click', () => { go(index + 1); startAutoplay(); });
+    dots.forEach((d, i) => d.addEventListener('click', () => { go(i); startAutoplay(); }));
+
+    const region = track.closest('section');
+    region.addEventListener('mouseenter', stopAutoplay);
+    region.addEventListener('mouseleave', startAutoplay);
+
+    render();
+    startAutoplay();
+  })();
+
+  // ---- Contact form validation + submit ----
+  (function () {
+    const form = document.getElementById('contactForm');
+    const success = document.getElementById('formSuccess');
+
+    const phonePattern = /^[0-9+()\-.\s]{7,20}$/;
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    function setError(name, show) {
+      const el = form.querySelector(`[data-error-for="${name}"]`);
+      const input = form.querySelector(`[name="${name}"]`);
+      if (!el) return;
+      el.classList.toggle('hidden', !show);
+      if (input) input.style.borderColor = show ? '#FF6B35' : '';
+    }
+
+    function validate() {
+      let valid = true;
+      const fullName = form.fullName.value.trim();
+      const businessName = form.businessName.value.trim();
+      const email = form.email.value.trim();
+      const phone = form.phone.value.trim();
+      const message = form.message.value.trim();
+      const consent = form.consent.checked;
+
+      setError('fullName', fullName.length < 2); if (fullName.length < 2) valid = false;
+      setError('businessName', businessName.length < 2); if (businessName.length < 2) valid = false;
+      setError('email', !emailPattern.test(email)); if (!emailPattern.test(email)) valid = false;
+      setError('phone', !phonePattern.test(phone)); if (!phonePattern.test(phone)) valid = false;
+      setError('message', message.length < 5); if (message.length < 5) valid = false;
+      setError('consent', !consent); if (!consent) valid = false;
+
+      return valid;
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      // Honeypot check — if filled, silently drop (bot)
+      if (form.company_website.value.trim() !== '') {
+        form.reset();
+        return;
+      }
+
+      if (!validate()) return;
+
+      // NOTE: replace with a real fetch() call to your backend / form API.
+      // Example:
+      // fetch('/api/contact', { method: 'POST', body: new FormData(form) })
+
+      form.classList.add('hidden');
+      success.classList.remove('hidden');
+      success.classList.add('flex');
+    });
+  })();
+</script>
+
+</body>
+</html>
